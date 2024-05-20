@@ -18,6 +18,9 @@ window.addEventListener('load', () => {
   const password = document.querySelector('#password');
   const errorPassword = password.nextElementSibling;
 
+  const passwordConfirm = document.querySelector('#passwordConfirm');
+  const errorPasswordConfirm = passwordConfirm.nextElementSibling;
+
   const isValidEmail = emailRegExp.test(email.value);
   email.className =
     isValidEmail || email.value.length > 0 ? 'valid' : 'invalid';
@@ -73,6 +76,31 @@ window.addEventListener('load', () => {
       errorPassword.textContent = `Password should be at least ${password.minLength} characters; you entered ${password.value.length}.`;
       errorPassword.className = 'error active';
     }
+    if (
+      passwordConfirm.value === password.value &&
+      !passwordConfirm.validity.tooShort
+    ) {
+      passwordConfirm.className = 'valid';
+      errorPasswordConfirm.textContent = '';
+      errorPasswordConfirm.className = 'error';
+    } else {
+      passwordConfirm.className = 'invalid';
+    }
+  });
+
+  passwordConfirm.addEventListener('input', () => {
+    if (
+      passwordConfirm.value === password.value &&
+      !passwordConfirm.validity.tooShort
+    ) {
+      passwordConfirm.className = 'valid';
+      errorPasswordConfirm.textContent = '';
+      errorPasswordConfirm.className = 'error';
+    } else {
+      passwordConfirm.className = 'invalid';
+      errorPasswordConfirm.textContent = `Your confirmation password should be at least ${passwordConfirm.minLength} characters and match your password`;
+      errorPasswordConfirm.className = 'error active';
+    }
   });
 
   form.addEventListener('submit', (e) => {
@@ -108,6 +136,30 @@ window.addEventListener('load', () => {
     } else {
       errorPassword.textContent = '';
       errorPassword.className = 'error';
+    }
+
+    if (
+      passwordConfirm.value === password.value &&
+      !passwordConfirm.validity.tooShort
+    ) {
+      passwordConfirm.className = 'valid';
+      errorPasswordConfirm.textContent = '';
+      errorPasswordConfirm.className = 'error';
+    } else {
+      passwordConfirm.className = 'invalid';
+      errorPasswordConfirm.textContent = `Your confirmation password should be at least ${passwordConfirm.minLength} characters and match your password`;
+      errorPasswordConfirm.className = 'error active';
+    }
+
+    if (
+      email.className === 'valid' &&
+      ZIPField.className === 'valid' &&
+      password.validity.valid &&
+      passwordConfirm.value === password.value &&
+      !passwordConfirm.validity.tooShort
+    ) {
+      form.reset();
+      email.className = 'invalid';
     }
   });
 });
