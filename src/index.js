@@ -15,13 +15,12 @@ window.addEventListener('load', () => {
   let zipData = checkZIP(country.value);
   let zipRegExp = new RegExp(zipData[0], '');
 
+  const password = document.querySelector('#password');
+  const errorPassword = password.nextElementSibling;
+
   const isValidEmail = emailRegExp.test(email.value);
   email.className =
-    isValidEmail || email.value.length === 0 ? 'valid' : 'invalid';
-
-  const isValidZIPField = zipRegExp.test(ZIPField.value);
-  ZIPField.className =
-    isValidZIPField || ZIPField.value.length === 0 ? 'valid' : 'invalid';
+    isValidEmail || email.value.length > 0 ? 'valid' : 'invalid';
 
   email.addEventListener('input', () => {
     const isValid = email.value.length > 0 && emailRegExp.test(email.value);
@@ -31,16 +30,14 @@ window.addEventListener('load', () => {
       errorEmail.className = 'error';
     } else {
       email.className = 'invalid';
+      errorEmail.textContent = 'I expect an email, darling!';
+      errorEmail.className = 'error active';
     }
   });
 
   country.addEventListener('change', () => {
     zipData = checkZIP(country.value);
     zipRegExp = new RegExp(zipData[0], '');
-  })
-
-  ZIPField.addEventListener('input', () => {
-    checkZIP(country.value);
     const isValid = ZIPField.value.length > 0 && zipRegExp.test(ZIPField.value);
     if (isValid) {
       ZIPField.className = 'valid';
@@ -48,6 +45,33 @@ window.addEventListener('load', () => {
       errorZIP.className = 'error';
     } else {
       ZIPField.className = 'invalid';
+      errorZIP.textContent = zipData[1];
+      errorZIP.className = 'error active';
+    }
+  });
+
+  ZIPField.addEventListener('input', () => {
+    zipData = checkZIP(country.value);
+    zipRegExp = new RegExp(zipData[0], '');
+    const isValid = ZIPField.value.length > 0 && zipRegExp.test(ZIPField.value);
+    if (isValid) {
+      ZIPField.className = 'valid';
+      errorZIP.textContent = '';
+      errorZIP.className = 'error';
+    } else {
+      ZIPField.className = 'invalid';
+      errorZIP.textContent = zipData[1];
+      errorZIP.className = 'error active';
+    }
+  });
+
+  password.addEventListener('input', () => {
+    if (password.validity.valid) {
+      errorPassword.textContent = '';
+      errorPassword.className = 'error';
+    } else if (password.validity.tooShort) {
+      errorPassword.textContent = `Password should be at least ${password.minLength} characters; you entered ${password.value.length}.`;
+      errorPassword.className = 'error active';
     }
   });
 
@@ -76,6 +100,14 @@ window.addEventListener('load', () => {
       ZIPField.className = 'valid';
       errorZIP.textContent = '';
       errorZIP.className = 'error';
+    }
+
+    if (!password.validity.valid) {
+      errorPassword.textContent = `Password should be at least ${password.minLength} characters; you entered ${password.value.length}.`;
+      errorPassword.className = 'error active';
+    } else {
+      errorPassword.textContent = '';
+      errorPassword.className = 'error';
     }
   });
 });
