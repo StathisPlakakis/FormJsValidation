@@ -9,10 +9,19 @@
     <form action="#" novalidate>
       <p>
         <label for="mail"
-          ><span>Please enter an email address:</span
+          ><span>Please enter an email address : </span
           ><input type="text" id="mail" name="mail" />
           <span class="error" aria-live="polite"></span>
         </label>
+      </p>
+      <p>
+        <label for="Country"> Please select a country : </label>
+        <select id="Country">
+          <option value="fr">France</option>
+          <option value="ch" selected>Switzerland</option>
+          <option value="de">Germany</option>
+          <option value="nl">The Netherlands</option>
+        </select>
       </p>
       <button>Submit</button>
     </form>

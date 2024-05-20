@@ -2,7 +2,7 @@ body {
   font-size: 1.5rem;
 }
 
-input {
+input, select {
   outline: none;
   font-size: 90%;
 }
